@@ -3,12 +3,21 @@
 		{% if title %}
 		<title>{{ title }}- microblog</title>
 		{% else %}
-		<title>Welcone to mocroblog</title>
+		<title>Welcome to mocroblog</title>
 		{% endif %}
 	</head>
 	<body>
 	   <div>Microblog: <a href="/index">Home</a></div>
 	   <hr>
-	   {% block content %}{% endblock %}
+	   	{% with messages = get_flashed_messages() %}
+	   	   {%if messages %}
+	   	     <ul>
+	   	     {% for message in  messages %}
+	   	         <li>{{ message }}</li>
+	   	     {% endfor %}
+	   	     </ul>
+	   	    {% endif %}
+	   	   {% endwith %}
+	   	   {% block content %}{% endblock %}
 	</body>
 </html>
