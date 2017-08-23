@@ -5,6 +5,7 @@ from .forms import LoginForm
 @app.route('/')
 @app.route('/index')
 def index():
+
     user = {'nickname': 'Miguel'}
     posts = [
         {
@@ -20,6 +21,9 @@ def index():
                            title='Home',
                            user=user,
                            posts=posts)
+
+
+	
 
 
 @app.route('/login', methods=['GET', 'POST'])
