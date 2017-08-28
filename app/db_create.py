@@ -1,4 +1,4 @@
-#!flask/bin/python
+#!flask/bin/python2.7
 from migrate.versioning import api
 from config import SQLALCHEMY_DATABASE_URI
 from config import SQLALCHEMY_MIGRATE_REPO
