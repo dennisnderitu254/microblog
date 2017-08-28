@@ -17,3 +17,5 @@ def downgrade(migrate_engine):
     # Operations to reverse the above upgrade go here.
     pre_meta.bind = migrate_engine
     post_meta.bind = migrate_engine
+
+# This is the first migration
