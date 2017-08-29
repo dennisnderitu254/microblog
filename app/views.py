@@ -42,7 +42,7 @@ def before_request():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-@iod.loginhandler
+@oid.loginhandler
 def login():
   if g.user is not None and g.user.is_authenticated:
     return redirect(url_for('index'))
