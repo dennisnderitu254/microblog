@@ -13,14 +13,11 @@ def load_user(id):
 @app.before_request
 def before_request():
     g.user = current_user
+    if g.user.is_authenticated:
+      g.user.lastseen = datetime.utcnow()
+      db.session.add(g.user)
+      db.session.commit()
 
-@app.before_request
-def before_request():
-  g.user = current_user
-  if g.user.is_authenticated:
-    g.user.lastseen = datetime.utcnow()
-    db.session.add(g.user)
-    db.session.commit()
 
 @app.route('/')
 @app.route('/index')
@@ -43,10 +40,6 @@ def index():
                            user=user,
                            posts=posts)
 
-@app.before_request
-def before_request():
-  g.user = current_user
-
 
 @app.route('/login', methods=['GET', 'POST'])
 @oid.loginhandler
@@ -61,6 +54,7 @@ def login():
                            title='Sign In',
                            form=form,
                            providers=app.config['OPENID_PROVIDERS'])
+
 
 @oid.after_login
 def after_login(resp):
@@ -81,6 +75,7 @@ def after_login(resp):
         session.pop('remember_me', None)
     login_user(user, remember=remember_me)
     return redirect(request.args.get('next') or url_for('index'))
+
 
 @app.route('/user/<nickname>')
 @login_required
