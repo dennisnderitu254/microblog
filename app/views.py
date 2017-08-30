@@ -3,6 +3,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db, lm, oid
 from .forms import LoginForm
 from .models import User
+from datetime import datetime
 
 @lm.user_loader
 def load_user(id):
@@ -13,7 +14,13 @@ def load_user(id):
 def before_request():
     g.user = current_user
 
-
+@app.before_request
+def before_request():
+  g.user = current_user
+  if g.user.is_authenticated:
+    g.user.lastseen = datetime.utcnow()
+    db.session.add(g.user)
+    db.session.commit()
 
 @app.route('/')
 @app.route('/index')
@@ -49,7 +56,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
       session['remember_me'] = form.remember_me.data
-      return iod.try_login(form.openid.data, ask_for=['nickname', 'email'])
+      return oid.try_login(form.openid.data, ask_for=['nickname', 'email'])
     return render_template('login.html', 
                            title='Sign In',
                            form=form,
@@ -75,6 +82,21 @@ def after_login(resp):
     login_user(user, remember=remember_me)
     return redirect(request.args.get('next') or url_for('index'))
 
+@app.route('/user/<nickname>')
+@login_required
+def user(nickname):
+  user = User.query.filter_by(nickname=nickname).first()
+  if user == None:
+    flash('User %s not found.' % nickname)
+    return redirect(url_for('index'))
+  posts = [
+    {'author': user, 'body': 'Test post #1'},
+    {'author': user, 'body': 'Test post #2'}
+
+  ]
+  return render_template('user.html',
+                        user=user,
+                        posts=posts)
 
 @app.route('/logout')
 def logout():
