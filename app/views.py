@@ -19,28 +19,6 @@ def before_request():
       db.session.commit()
 
 
-@app.route('/')
-@app.route('/index')
-@login_required
-def index():
-
-    user = {'nickname': 'Dennis'}
-    posts = [
-        {
-            'author': {'nickname': 'Roman Reigns'},
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': {'nickname': 'John Cena'},
-            'body': 'The Avengers movie was so cool!'
-        }
-    ]
-    return render_template('index.html',
-                           title='Home',
-                           user=user,
-                           posts=posts)
-
-
 @app.route('/login', methods=['GET', 'POST'])
 @oid.loginhandler
 def login():
