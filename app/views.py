@@ -1,18 +1,21 @@
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask_login import login_user, logout_user, current_user, login_required
+from datetime import datetime
 from app import app, db, lm, oid
 from .forms import LoginForm, EditForm
 from .models import User
-from datetime import datetime
+
 
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('404.html'), 404
 
+
 @app.errorhandler(500)
 def internal_error(error):
     db.seesion.rollback()
     return render_template('500.html'), 500
+
 
 @lm.user_loader
 def load_user(id):
@@ -107,7 +110,7 @@ def logout():
 @app.route('/edit', methods=['GET', 'POST'])
 @login_required
 def edit():
-    form = EditForm()
+    form = EditForm(g.user.nickname)
     if form.validate_on_submit():
         g.user.nickname = form.nickname.data
         g.user.about_me = form.about_me.data
