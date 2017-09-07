@@ -11,6 +11,12 @@ class User(db.Model):
 	last_seen = db.Column(db.DateTime)
 	def avatar(self,size):
 		return 'http://www.gravatar.com/avatar/%s?d=mm&s=%d' %(md5(self.email.encode('utf-8')).hexdigest(), size)
+	folowed = db.relationship('User',
+								secondary=followers,
+								primaryjoin=(followers.c.follower_id==id),
+								secondaryjoin=(followers.c.followed_id==id),
+								backref=db.backref('followers', lazy='dynamic'),
+								lazy='dynamic')
 
 	@staticmethod
 	def make_unique_nickname(nickname):
@@ -61,6 +67,12 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post %r>' % (self.body)
+
+followers = db.Table('followers',
+	db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+	db.column('followed_id', db.Integer, db.ForeignKey(user.id))
+)
+
 
 
         
