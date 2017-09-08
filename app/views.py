@@ -75,8 +75,12 @@ def after_login(resp):
         nickname = resp.nickname
         if nickname is None or nickname == "":
                 nickname = resp.email.split('@')[0]
+        nickname =User.make_unique_nickname(nickname)
         user = User(nickname=nickname, email=resp.email)
         db.session.add(user)
+        db.session.commit()
+        # make the user follow him/herself
+        db.session.add(user.follow(user))
         db.session.commit()
     remember_me = False
     if 'remember_me' in session:
