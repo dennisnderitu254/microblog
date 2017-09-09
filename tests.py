@@ -22,26 +22,26 @@ class TestCase(unittest.TestCase):
 		db.drop_all()
 
 	def test_avatar(self):
-		u = User(nickname='Dennis', email='dknderitu@gmail.com')
+		u = User(nickname='John', email='john@example.com')
 		avatar = u.avatar(128)
 		expected = 'http://www.gravatar.com/avatar/d4c74594d841139328695756648b6bd6'
 		assert avatar[0:len(expected)] == expected
 
 	def test_make_unique_nickname(self):
-		u = User(nickname='Dennis', email='dknderitu@gmail.com')
+		u = User(nickname='John', email='john@example.com')
 		db.session.add(u)
 		db.session.commit()
-		nickname = User.test_make_unique_nickname('Dennis')
-		assert nickname != 'Dennis'
-		u = User(nickname=nickname, email='dknderitu@gmail.com')
+		nickname = User.test_make_unique_nickname('John')
+		assert nickname != 'John'
+		u = User(nickname=nickname, email='john@example.com')
 		db.session.add(u)
 		db.session.commit()
-		nickname2 = User.test_make_unique_nickname('Dennis')
-		assert nickname2 != 'Dennis'
+		nickname2 = User.test_make_unique_nickname('John')
+		assert nickname2 != 'John'
 		assert nickname2 != nickname
 
 	def test_follow(self):
-		ul = User(nickname='john', email='dknderitu@gmail.com')
+		ul = User(nickname='john', email='john@example.com')
 		u2 = User(nickname='susan', email='susan@example.com')
 		db.session.add(u1)
 		db.session.add(u2)
@@ -63,6 +63,8 @@ class TestCase(unittest.TestCase):
         assert not u1.is_following(u2)
         assert u1.followed.count() == 0
         assert u2.followers.count() == 0
+    
+
     def test_follow_posts(self):
         # make four users
         u1 = User(nickname='john', email='john@example.com')
