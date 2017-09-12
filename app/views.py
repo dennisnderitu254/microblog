@@ -2,8 +2,8 @@ from flask import render_template, flash, redirect, session, url_for, request, g
 from flask_login import login_user, logout_user, current_user, login_required
 from datetime import datetime
 from app import app, db, lm, oid
-from .forms import LoginForm, EditForm
-from .models import User
+from .forms import LoginForm, EditForm, PostForm
+from .models import User,Post
 
 
 @app.errorhandler(404)
@@ -30,21 +30,21 @@ def before_request():
         db.session.add(g.user)
         db.session.commit()
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
+@app.route('/index/<int:page>', methods=['GET', 'POST'])
 @login_required
-def index():
-    user = g.user
-    posts = [
-            {
-                    'author': {'nickname': 'John'},
-                    'body': 'Beautiful day in Portland!'
-            },
-            {
-                    'author': {'nickname': 'Susan'},
-                    'body': 'The Avengers movie was so cool!'
-            }
-    ]
+def index(page=1):
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, timestamp=datetime.utcnow(), author=g.user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post is now live!')
+        return redirect(url_for('index'))
+
+    posts = g.user.followed_posts().all().paginate(page, POSTS_PER_PAGE, False).items
+
     return render_template('index.html',
                              title='Home',
                              user=user,
