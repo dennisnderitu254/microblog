@@ -22,3 +22,6 @@ MAIL_PASSWORD = None
 
 # administrator list
 ADMINS = ['dknderitu@gmail.com.com']
+
+# Pagination
+POSTS_PER_PAGE = 3
