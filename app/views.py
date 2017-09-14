@@ -4,7 +4,7 @@ from datetime import datetime
 from app import app, db, lm, oid
 from .forms import LoginForm, EditForm, PostForm
 from .models import User,Post
-
+from config import POSTS_PER_PAGE
 
 @app.errorhandler(404)
 def not_found_error(error):
