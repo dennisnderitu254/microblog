@@ -2,11 +2,14 @@ from flask import render_template, flash, redirect, session, url_for, request, g
 from flask_login import login_user, logout_user, current_user, login_required
 from datetime import datetime
 from app import app, db, lm, oid
-from .forms import LoginForm, EditForm, PostForm
+from .forms import LoginForm, EditForm, PostForm, SearchForm
 from .models import User,Post
 from config import POSTS_PER_PAGE
 from forms import SearchForm
 from config import MAX_SEARCH_RESULTS
+from .emails import follower_notification
+
+
 
 @app.errorhandler(404)
 def not_found_error(error):
@@ -162,6 +165,7 @@ def unfollow(nickname):
         return redirect(url_for('user', nickname=nickname))
     db.session.add(u)
     db.session.commit()
+    follower_notification(user, g.user)
     flash('You have stopped following ' + nickname + '.')
     return redirect(url_for('user', nickname=nickname))
 
