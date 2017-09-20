@@ -8,8 +8,9 @@ from config import basedir, ADMINS, MAIL_SERVER, MAIL_PORT, MAIL_USERNAME, \
 from flask_mail import Mail 
 
 
-mail = Mail(app)
+
 app = Flask(__name__)
+mail = Mail(app)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 lm = LoginManager()
