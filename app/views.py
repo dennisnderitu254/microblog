@@ -4,22 +4,8 @@ from datetime import datetime
 from app import app, db, lm, oid
 from .forms import LoginForm, EditForm, PostForm, SearchForm
 from .models import User,Post
-from config import POSTS_PER_PAGE
-from forms import SearchForm
-from config import MAX_SEARCH_RESULTS
 from .emails import follower_notification
-
-
-
-@app.errorhandler(404)
-def not_found_error(error):
-    return render_template('404.html'), 404
-
-
-@app.errorhandler(500)
-def internal_error(error):
-    db.seesion.rollback()
-    return render_template('500.html'), 500
+from config import POSTS_PER_PAGE,MAX_SEARCH_RESULTS
 
 
 @lm.user_loader
@@ -34,6 +20,19 @@ def before_request():
         g.user.lastseen = datetime.utcnow()
         db.session.add(g.user)
         db.session.commit()
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    db.seesion.rollback()
+    return render_template('500.html'), 500
+
+
+
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
