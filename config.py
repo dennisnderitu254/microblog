@@ -34,6 +34,6 @@ WHOOSH_BASE = os.path.join(basedir, 'search.db')
 MAX_SEARCH_RESULTS = 50
 
 LANGUAGES = {
-	'en': 'English'
+	'en': 'English',
 	'es': 'Espanol'
 }
