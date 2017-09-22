@@ -1,6 +1,8 @@
+import re
 from hashlib import md5
 from app import db
 from app import app
+
 
 import sys
 if sys.version_info >= (3, 0):
@@ -64,6 +66,10 @@ class User(db.Model):
 			return unicode(self.id) # python 2
 		except NameError:
 			return str(self.id)  # Python 3
+
+	@staticmethod
+	def make_valid_nickname(nickname):
+		return re.sub('[^a-zA-Z0-9_\.]', '', nickname)
 
 	def avatar(self, size):
 		return 'http://www.gravatar.com/avatar/%s?d=mm&s=%d' % \
