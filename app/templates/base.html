@@ -26,7 +26,10 @@
 	   	         <li>{{ message }}</li>
 	   	     {% endfor %}
 	   	     </ul>
-	   	    {% endif %}
+	   	{% if g.locale != 'en' %}
+	    <script src="/static/js/moment-{{ g.locale }}.min.js"></script>
+		{% endif %}
+
 	   	   {% endwith %}
 	   	   {% block content %}{% endblock %}
 	</body>
