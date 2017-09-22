@@ -2,3 +2,5 @@
 *.pyc
 app.db
 tmp/
+babel.cfg
+messages.pot
