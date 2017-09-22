@@ -6,7 +6,13 @@ from .forms import LoginForm, EditForm, PostForm, SearchForm
 from .models import User,Post
 from .emails import follower_notification
 from config import POSTS_PER_PAGE,MAX_SEARCH_RESULTS
+from app import babel
+from config import LANGUAGES
 
+
+@babel.localselector
+def get_locale():
+    return 'es'
 
 @lm.user_loader
 def load_user(id):
@@ -20,6 +26,8 @@ def before_request():
         g.user.lastseen = datetime.utcnow()
         db.session.add(g.user)
         db.session.commit()
+        g.search_form = SearchForm()
+    g.locale = get_locale()
 
 @app.errorhandler(404)
 def not_found_error(error):
@@ -79,6 +87,7 @@ def after_login(resp):
         nickname = resp.nickname
         if nickname is None or nickname == "":
                 nickname = resp.email.split('@')[0]
+        nickname = User.make_valid_nickname(nickname)
         nickname =User.make_unique_nickname(nickname)
         user = User(nickname=nickname, email=resp.email)
         db.session.add(user)
