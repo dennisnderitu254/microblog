@@ -9,6 +9,8 @@ from config import POSTS_PER_PAGE,MAX_SEARCH_RESULTS
 from app import babel
 from config import LANGUAGES
 from guess_language import guess_language
+from flask import jsonify
+from .translate import microsoft_translate
 
 
 @babel.localselector
@@ -205,3 +207,12 @@ def search_results(query):
     return render_template('search_results.html',
                            query=query,
                            results=results)
+
+@app.route('/translate', methods=['POST'])
+@login_required
+def translate():
+    return jsonify({ 
+        'text': microsoft_translate(
+            request.form['text'], 
+            request.form['sourceLang'], 
+            request.form['destLang']) })
