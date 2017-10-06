@@ -5,6 +5,11 @@
 
 	<p><a href="{{ url_for('user', nickname=post.author.nickname)}}">{{ post.author.nickname }}</a> said {{ momentjs(post.timestamp).fromNow() }}:</p>
 <p><strong>{{ post.body }}</strong></p>
+
+{% if post.language != None and post.language != '' and post.language != g.locale %}
+<div><a href="#">{{ _('Translate') }}</a></div>
+{% endif %}
+
 	</td>
 </tr>
 </table>
