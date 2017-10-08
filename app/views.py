@@ -1,16 +1,15 @@
-from flask import render_template, flash, redirect, session, url_for, request, g
+from flask import render_template, flash, redirect, session, url_for, request, \
+    g, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
+from flask_babel import gettext
 from datetime import datetime
-from app import app, db, lm, oid
+from guess_language import guessLanguage
+from app import app, db, lm, oid, babel
 from .forms import LoginForm, EditForm, PostForm, SearchForm
-from .models import User,Post
+from .models import User, Post
 from .emails import follower_notification
-from config import POSTS_PER_PAGE,MAX_SEARCH_RESULTS
-from app import babel
-from config import LANGUAGES
-from guess_language import guess_language
-from flask import jsonify
 from .translate import microsoft_translate
+from config import POSTS_PER_PAGE, MAX_SEARCH_RESULTS, LANGUAGES
 
 
 @babel.localselector
