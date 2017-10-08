@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -13,3 +14,29 @@ OPENID_PROVIDERS = [
 
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
+WHOOSH_BASE = os.path.join(basedir, 'search.db')
+
+# email server
+MAIL_SERVER = 'your.mailserver.com'
+MAIL_PORT = 25
+MAIL_USE_TLS = False
+MAIL_USE_SSL = False
+MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+
+# available languages
+LANGUAGES = {
+    'en': 'English',
+    'es': 'Español'
+}
+
+# microsoft translation service
+MS_TRANSLATOR_CLIENT_ID = '' # enter your MS translator app id here
+MS_TRANSLATOR_CLIENT_SECRET = '' # enter your MS translator app secret here
+
+# administrator list
+ADMINS = ['you@example.com']
+
+# pagination
+POSTS_PER_PAGE = 3
+MAX_SEARCH_RESULTS = 50
