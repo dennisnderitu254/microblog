@@ -27,6 +27,7 @@ class User(db.Model):
 	posts = db.relationship('Post', backref='author', lazy='dynamic')
 	about_me = db.Column(db.String(140))
 	last_seen = db.Column(db.DateTime)
+
 	def avatar(self,size):
 		return 'http://www.gravatar.com/avatar/%s?d=mm&s=%d' %(md5(self.email.encode('utf-8')).hexdigest(), size)
 	followed = db.relationship('User',
