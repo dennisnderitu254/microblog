@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /env
 *.pyc
 app.db
@@ -6,3 +7,10 @@ babel.cfg
 messages.pot
 microblog-env
 .vscode
+=======
+*.pyc
+babel.cfg
+app.db
+env/
+messages.pot
+>>>>>>> 42720b656f552021689be8281d858afda637c1bd
